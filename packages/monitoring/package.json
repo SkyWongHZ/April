@@ -1,0 +1,40 @@
+{
+  "name": "@monitoring/monitoring",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "lint": "eslint \"src/**/*.ts*\""
+  },
+  "dependencies": {
+    "@sentry/browser": "^7.80.0",
+    "@sentry/react": "^7.80.0",
+    "@sentry/tracing": "^7.80.0",
+    "@sentry/types": "^7.80.0"
+  },
+  "devDependencies": {
+    "@monitoring/tsconfig": "workspace:*",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "react": "^18.0.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  }
+}
