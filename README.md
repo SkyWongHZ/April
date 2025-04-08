@@ -1,60 +1,85 @@
-# Monitoring System
+# 前端监控系统
 
-This is a monorepo project built with Turborepo, containing a Next.js frontend and a Nest.js backend.
+这是一个基于 Sentry 构建的轻量级前端监控系统，专注于错误捕获和性能监控，优化了 Sentry 免费方案的使用。
 
-## Project Structure
+## 项目结构
 
 ```
 .
-├── apps
-│   ├── web                 # Next.js frontend application
-│   └── api                 # Nest.js backend application
-├── packages
-│   ├── ui                  # Shared UI components
-│   ├── types              # Shared TypeScript types
-│   ├── config             # Shared configuration
-│   ├── utils              # Shared utilities
-│   └── tsconfig           # Shared TypeScript configurations
+├── apps/                      # 应用程序
+│   ├── api/                   # 后端 API 服务
+│   └── web/                   # 前端 Web 应用
+│       └── app/               # Next.js App 目录
+│           ├── MonitoringClientWrapper.tsx  # 前端监控集成
+│           ├── layout.tsx     # 应用布局
+│           └── page.tsx       # 主页面
+│
+├── packages/                  # 共享包
+│   ├── monitoring/            # 监控系统核心包
+│   │   ├── src/               # 源代码
+│   │   │   ├── index.ts       # 主入口
+│   │   │   └── react.tsx      # React 集成
+│   │   └── examples/          # 使用示例
+│   ├── types/                 # 共享类型定义
+│   └── ui/                    # UI 组件库
+│
+└── docs/                      # 文档
+    └── monitoring-implementation.md  # 监控实现说明
 ```
 
-## Getting Started
+## 技术栈
 
-### Prerequisites
+- **前端**: Next.js, React
+- **监控**: Sentry
+- **构建工具**: Turborepo, pnpm
+- **语言**: TypeScript
 
-- Node.js >= 18
-- pnpm >= 8.9.0
+## 监控系统设计
 
-### Installation
+我们的监控系统是一个轻量级的封装，专注于在 Sentry 免费方案的限制下提供最大价值：
 
-```bash
-# Install dependencies
-pnpm install
+- **错误捕获**: 自动捕获未处理的异常和错误
+- **性能监控**: 跟踪关键性能指标
+- **低采样率**: 默认 10% 采样率以节省 Sentry 配额
+- **错误过滤**: 忽略常见的无关紧要错误
 
-# Start development servers
-pnpm dev
+## 快速开始
 
-# Build all applications and packages
-pnpm build
+1. 安装依赖:
+   ```bash
+   pnpm install
+   ```
+
+2. 开发模式:
+   ```bash
+   pnpm dev
+   ```
+
+3. 构建项目:
+   ```bash
+   pnpm build
+   ```
+
+## 使用监控系统
+
+在任何 React 应用中使用:
+
+```tsx
+import { MonitoringProvider } from '@monitoring/monitoring/react';
+
+function App() {
+  return (
+    <MonitoringProvider
+      options={{
+        dsn: 'YOUR_SENTRY_DSN',
+        environment: 'production',
+        sampleRate: 0.1
+      }}
+    >
+      <YourApp />
+    </MonitoringProvider>
+  );
+}
 ```
 
-### Development
-
-- Frontend (Next.js): http://localhost:3000
-- Backend (Nest.js): http://localhost:3001
-
-## Workspace Dependencies
-
-- `@monitoring/web`: Next.js frontend application
-- `@monitoring/api`: Nest.js backend application
-- `@monitoring/ui`: Shared React components
-- `@monitoring/types`: Shared TypeScript types
-- `@monitoring/config`: Shared configuration
-- `@monitoring/utils`: Shared utilities
-
-## Scripts
-
-- `pnpm dev`: Start all applications in development mode
-- `pnpm build`: Build all applications and packages
-- `pnpm lint`: Lint all applications and packages
-- `pnpm test`: Run tests across all applications and packages
-- `pnpm clean`: Clean all build outputs
+详细文档请参考 [docs/monitoring-implementation.md](docs/monitoring-implementation.md)。
