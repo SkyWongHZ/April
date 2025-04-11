@@ -12,7 +12,8 @@
     "@sentry/react": "^9.12.0",
     "next": "15.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sentry-collector": "link:/Users/sky_wang/Documents/project/sentry-collector"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
