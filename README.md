@@ -6,37 +6,26 @@
 
 ```
 .
-├── apps/                      # 应用程序
-│   ├── api/                   # 后端 API 服务
-│   └── web/                   # 前端 Web 应用
-│       └── app/               # Next.js App 目录
-│           ├── MonitoringClientWrapper.tsx  # 前端监控集成
-│           ├── layout.tsx     # 应用布局
-│           └── page.tsx       # 主页面
-│
-├── packages/                  # 共享包
-│   ├── monitoring/            # 监控系统核心包
-│   │   ├── src/               # 源代码
-│   │   │   ├── index.ts       # 主入口
-│   │   │   └── react.tsx      # React 集成
-│   │   └── examples/          # 使用示例
-│   ├── types/                 # 共享类型定义
-│   └── ui/                    # UI 组件库
-│
-└── docs/                      # 文档
-    └── monitoring-implementation.md  # 监控实现说明
+└── apps/                      # 应用程序
+    ├── server/                # 后端服务 (Nest.js)
+    ├── web/                   # 前端 Web 应用 (Next.js)
+    │   └── app/               # Next.js App 目录
+    │       ├── layout.tsx     # 应用布局
+    │       └── page.tsx       # 主页面
+    └── example/               # 示例应用
 ```
 
 ## 技术栈
 
 - **前端**: Next.js, React
+- **后端**: Nest.js
 - **监控**: Sentry
 - **构建工具**: Turborepo, pnpm
 - **语言**: TypeScript
 
 ## 监控系统设计
 
-我们的监控系统是一个轻量级的封装，专注于在 Sentry 免费方案的限制下提供最大价值：
+我们的监控系统直接使用 Sentry SDK，专注于在 Sentry 免费方案的限制下提供最大价值：
 
 - **错误捕获**: 自动捕获未处理的异常和错误
 - **性能监控**: 跟踪关键性能指标
@@ -45,9 +34,10 @@
 
 ## 快速开始
 
-1. 安装依赖:
+1. 安装依赖 (为每个应用单独安装):
    ```bash
-   pnpm install
+   cd apps/web && pnpm install --ignore-workspace
+   cd ../server && pnpm install --ignore-workspace
    ```
 
 2. 开发模式:
@@ -65,21 +55,13 @@
 在任何 React 应用中使用:
 
 ```tsx
-import { MonitoringProvider } from '@monitoring/monitoring/react';
+import { ErrorBoundary } from '@sentry/react';
 
 function App() {
   return (
-    <MonitoringProvider
-      options={{
-        dsn: 'YOUR_SENTRY_DSN',
-        environment: 'production',
-        sampleRate: 0.1
-      }}
-    >
+    <ErrorBoundary fallback={<p>出错了</p>}>
       <YourApp />
-    </MonitoringProvider>
+    </ErrorBoundary>
   );
 }
 ```
-
-详细文档请参考 [docs/monitoring-implementation.md](docs/monitoring-implementation.md)。
